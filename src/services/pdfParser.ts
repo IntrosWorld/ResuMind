@@ -30,7 +30,7 @@ export class PDFParser {
 
         // Extract text items and preserve spacing
         const pageText = textContent.items
-          .map((item: any) => {
+          .map((item) => {
             // Check if item has str property (TextItem)
             if ('str' in item) {
               return item.str;
@@ -60,7 +60,7 @@ export class PDFParser {
 
   private static cleanExtractedText(text: string): string {
     // Remove excessive whitespace while preserving structure
-    let cleaned = text
+    const cleaned = text
       .replace(/\r\n/g, '\n')  // Normalize line endings
       .replace(/\n{3,}/g, '\n\n')  // Max 2 consecutive newlines
       .replace(/ {2,}/g, ' ')  // Remove multiple spaces

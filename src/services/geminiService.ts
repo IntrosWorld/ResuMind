@@ -1,9 +1,10 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import type { GenerativeModel } from '@google/generative-ai';
 import { ATSScore, AnalysisResult } from '@/types';
 import { ATSAnalyzerService } from './atsAnalyzer';
 
 export class GeminiService {
-  private model: any;
+  private model: GenerativeModel;
 
   constructor() {
     const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
