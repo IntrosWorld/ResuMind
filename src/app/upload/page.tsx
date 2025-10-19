@@ -59,7 +59,7 @@ export default function UploadPage() {
         }
       };
       reader.readAsDataURL(selectedFile);
-    } catch (err) {
+    } catch {
       setError('Failed to process file. Please try again.');
       setIsLoading(false);
     }

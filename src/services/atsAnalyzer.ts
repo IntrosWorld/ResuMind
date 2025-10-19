@@ -490,10 +490,8 @@ export class ATSAnalyzerService {
       'objective', 'career objective', 'professional profile', 'about',
     ];
 
-    let hasSummarySection = false;
     for (const keyword of summaryKeywords) {
       if (lowerText.includes(keyword)) {
-        hasSummarySection = true;
         score += 2;
         break;
       }

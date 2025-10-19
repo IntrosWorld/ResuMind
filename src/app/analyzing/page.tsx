@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { PDFParser } from '@/services/pdfParser';
 import { GeminiService } from '@/services/geminiService';
-import { AnalysisResult } from '@/types';
 
 const LOADING_STEPS = [
   'Extracting resume text...',
@@ -23,6 +22,7 @@ export default function AnalyzingPage() {
 
   useEffect(() => {
     startAnalysis();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startAnalysis = async () => {

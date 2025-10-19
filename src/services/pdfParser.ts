@@ -1,18 +1,32 @@
 // PDF parsing utility for browser environment using pdfjs-dist
-import * as pdfjsLib from 'pdfjs-dist';
+// Import dynamically to avoid SSR issues
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let pdfjsLib: any = null;
 
-// Configure the worker for pdfjs-dist - use local file from public directory
-if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+// Dynamically import pdfjs-dist only on client side
+async function getPdfJs() {
+  if (typeof window === 'undefined') {
+    throw new Error('PDF parsing is only available in browser environment');
+  }
+
+  if (!pdfjsLib) {
+    pdfjsLib = await import('pdfjs-dist');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+  }
+
+  return pdfjsLib;
 }
 
 export class PDFParser {
   static async extractTextFromFile(file: File): Promise<string> {
     try {
+      // Dynamically import pdfjs-dist to avoid SSR issues
+      const pdfjs = await getPdfJs();
+
       const arrayBuffer = await file.arrayBuffer();
 
       // Configure loading task with proper settings
-      const loadingTask = pdfjsLib.getDocument({
+      const loadingTask = pdfjs.getDocument({
         data: arrayBuffer,
         useWorkerFetch: false,
         isEvalSupported: false,
@@ -30,9 +44,9 @@ export class PDFParser {
 
         // Extract text items and preserve spacing
         const pageText = textContent.items
-          .map((item) => {
+          .map((item: { str?: string }) => {
             // Check if item has str property (TextItem)
-            if ('str' in item) {
+            if ('str' in item && item.str) {
               return item.str;
             }
             return '';
@@ -79,8 +93,11 @@ export class PDFParser {
 
   static async getPDFInfo(file: File): Promise<{ pages: number; size: number }> {
     try {
+      // Dynamically import pdfjs-dist to avoid SSR issues
+      const pdfjs = await getPdfJs();
+
       const arrayBuffer = await file.arrayBuffer();
-      const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+      const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
       const pdf = await loadingTask.promise;
 
       return {

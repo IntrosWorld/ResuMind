@@ -42,11 +42,6 @@ export class GeminiService {
   }
 
   private buildAnalysisPrompt(resumeText: string, atsScore: ATSScore): string {
-    // Build detailed ATS breakdown for context
-    const criteriaBreakdown = Object.entries(atsScore.criteria)
-      .map(([key, criteria]) => `- ${criteria.name}: ${criteria.score}/${criteria.maxScore} ${criteria.passed ? '✓' : '✗'}`)
-      .join('\n');
-
     return `You are an expert resume coach. Analyze this resume and provide concise, actionable improvement advice.
 
 RESUME TEXT:

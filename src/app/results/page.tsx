@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, useAnimation } from 'framer-motion';
-import { AnalysisResult, ATSCriteria } from '@/types';
-import { getScoreColor, getScoreGradient } from '@/config/theme';
+import { motion } from 'framer-motion';
+import { AnalysisResult } from '@/types';
 
 // Function to convert AI analysis text to formatted HTML
 function formatAIAnalysis(text: string): string {
